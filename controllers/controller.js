@@ -3,9 +3,11 @@ const mongoose = require('mongoose');
 const search_term = require('../models/searchModel.js');
 mongoose.Promise = global.Promise;
 
+
 const key = process.env.KEY;
 const id = process.env.ID;
 const db = process.env.DB_URI;
+
 mongoose.connect(db);
 
 //connecting to db
