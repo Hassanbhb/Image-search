@@ -27,6 +27,7 @@ module.exports = function(app){
 	//returns search results
 	app.get('/api/:search', function(req, res){
 		const searchTerm = req.params.search;
+		const offset = req.query.offset;
 		//save the searchTerm in the db
 		const term = new search_term({
 			search_term: req.params.search,
@@ -35,8 +36,14 @@ module.exports = function(app){
 		term.save(function(err, data){
 			if (err) {return err.message};
 		});
-		//add the search term to the url
-		const url = "https://www.googleapis.com/customsearch/v1?key="+key+"&cx="+id+"&searchType=image&q="+searchTerm+"&start=10";
+		//add the search term and offset or default offset=10
+		let url = "";
+		if (offset) {
+			url = "https://www.googleapis.com/customsearch/v1?key="+key+"&cx="+id+"&searchType=image&q="+searchTerm+"&start="+offset;
+		}else{
+			url = "https://www.googleapis.com/customsearch/v1?key="+key+"&cx="+id+"&searchType=image&q="+searchTerm+"&start=10";
+		}
+		
 		const requestObject = {
 			uri: url,
 			method: 'GET',
